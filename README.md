@@ -6,6 +6,7 @@
 cp .env.example .env
 touch database/database.sqlite
 composer install
+php artisan migrate:fresh --seed
 php artisan test
 ```
 
