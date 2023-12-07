@@ -1,19 +1,32 @@
 <?php
 
-namespace Tests\Feature;
+use App\Filament\Resources\ArticleResource\Pages\CreateArticle;
+use App\Models\User;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use function Pest\Livewire\livewire;
 
-class ExampleTest extends TestCase
-{
-    /**
-     * A basic test example.
-     */
-    public function test_the_application_returns_a_successful_response(): void
-    {
-        $response = $this->get('/');
+beforeEach(function () {
+    $this->actingAs(User::factory()->create());
+});
 
-        $response->assertStatus(200);
-    }
-}
+// This one works
+it('works with type first', function () {
+    livewire(CreateArticle::class)
+        ->fillForm(['items' => [[
+            'type' => 'note',
+            'data' => ['body' => 'hi'],
+        ]]])
+        ->call('create')
+        ->assertHasNoFormErrors();
+});
+
+// This one fails
+it('works with type last', function () {
+    livewire(CreateArticle::class)
+        ->fillForm(['items' => [[
+            'data' => ['body' => 'hi'],
+            'type' => 'note',
+        ]]])
+        ->call('create')
+        ->assertHasNoFormErrors();
+});
