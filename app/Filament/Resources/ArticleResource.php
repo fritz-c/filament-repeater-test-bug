@@ -4,8 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ArticleResource\Pages;
 use App\Models\Article;
-use Filament\Forms\Components\Builder;
-use Filament\Forms\Components\Builder\Block;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,12 +21,21 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
-                Builder::make('items')
-                    ->blocks([
-                        Block::make('note')
-                            ->schema([
-                                TextInput::make('body'),
-                            ]),
+                Repeater::make('quotes')
+                    ->itemLabel(function (array $state): ?string {
+                        if (! $state['author'] || ! $state['title']) {
+                            return null;
+                        }
+
+                        return "{$state['author']}: {$state['title']}";
+                    })
+                    ->schema([
+                        TextInput::make('author')
+                            ->required(),
+                        TextInput::make('title')
+                            ->required(),
+                        TextInput::make('body')
+                            ->required(),
                     ]),
             ]);
     }

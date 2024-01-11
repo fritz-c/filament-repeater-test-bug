@@ -12,6 +12,6 @@ class Article extends Model
     public $guarded = ['id'];
 
     public $casts = [
-        'items' => 'array',
+        'quotes' => 'array',
     ];
 }

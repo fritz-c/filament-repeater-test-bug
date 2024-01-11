@@ -9,23 +9,12 @@ beforeEach(function () {
     $this->actingAs(User::factory()->create());
 });
 
-// This one works
-it('works with type first', function () {
+it('populates multiple fields in schema', function () {
     livewire(CreateArticle::class)
-        ->fillForm(['items' => [[
-            'type' => 'note',
-            'data' => ['body' => 'hi'],
-        ]]])
-        ->call('create')
-        ->assertHasNoFormErrors();
-});
-
-// This one fails
-it('works with type last', function () {
-    livewire(CreateArticle::class)
-        ->fillForm(['items' => [[
-            'data' => ['body' => 'hi'],
-            'type' => 'note',
+        ->fillForm(['quotes' => [[
+            'author' => 'Sally',
+            'title' => 'Foo',
+            'body' => 'Bar',
         ]]])
         ->call('create')
         ->assertHasNoFormErrors();
